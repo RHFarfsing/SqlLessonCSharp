@@ -6,7 +6,15 @@ namespace SqlLesson {
        static void Main(string[] args) {
             var sqllib = new BcConnection();
             sqllib.Connect(@"localhost\sqlexpress", "EdDb", "trusted_connection=true");
-            StudentController.bcConnection = (sqllib);
+            StudentController.bcConnection = sqllib;
+            MajorController.bcConnection = sqllib;
+            #region Major Controller methods
+            var majors = MajorController.GetAllMajors();
+            foreach(var major in majors) {
+                Console.WriteLine(major);
+            }
+            #endregion
+            #region Student Controller methods
             //var newStudent = new Student {
             //    Id = 999,
             //    Firstname = "Lazy",
@@ -17,7 +25,7 @@ namespace SqlLesson {
             //};
             //var success = StudentController.InsertStudent(newStudent);
             var student = StudentController.GetStudentByPk(888);
-            if(student == null) {
+            if (student == null) {
                 Console.WriteLine("Student not found");
             } else {
                 Console.WriteLine(student);
@@ -33,6 +41,7 @@ namespace SqlLesson {
             foreach(var student0 in students) {
                 Console.WriteLine(student0);
             }
+            #endregion
             sqllib.Disconnect();
         }
     }
