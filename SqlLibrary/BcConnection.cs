@@ -24,6 +24,7 @@ namespace SqlLibrary {
                 Connection.Dispose();
                 Connection = null;
             }
+            Console.WriteLine("Connection closed!");
         }
     }
 }
