@@ -3,15 +3,34 @@ using SqlLibrary;
 
 namespace SqlLesson {
     class Program {
-       static void Main(string[] args) {
+        static void Main(string[] args) {
             var sqllib = new BcConnection();
             sqllib.Connect(@"localhost\sqlexpress", "EdDb", "trusted_connection=true");
             StudentController.bcConnection = sqllib;
             MajorController.bcConnection = sqllib;
+            InstructorController.bcConnection = sqllib;
+            #region
+            var instructors = InstructorController.GetAllInstructors();
+            foreach (var i in instructors) {
+                Console.WriteLine(i);
+            }
+            var instructor = InstructorController.GetInstructorByPk(10);
+            if(instructor == null) {
+                Console.WriteLine("Instructor not found!");
+            } else {
+                Console.WriteLine(instructor);
+            }
+            #endregion
             #region Major Controller methods
-            var majors = MajorController.GetAllMajors();
-            foreach(var major in majors) {
+            var major = MajorController.GetMajorByPK(1);
+            if (major == null) {
+                Console.WriteLine("Major not found!");
+            } else {
                 Console.WriteLine(major);
+            }
+            var majors = MajorController.GetAllMajors();
+            foreach (var m in majors) {
+                Console.WriteLine(m);
             }
             #endregion
             #region Student Controller methods
@@ -38,11 +57,12 @@ namespace SqlLesson {
             //student.Lastname = "Chan";
             //var success = StudentController.UpdateStudent(student);
             var students = StudentController.GetAllStudents();
-            foreach(var student0 in students) {
+            foreach (var student0 in students) {
                 Console.WriteLine(student0);
             }
             #endregion
             sqllib.Disconnect();
+
         }
     }
 }

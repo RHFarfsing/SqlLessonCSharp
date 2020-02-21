@@ -6,6 +6,15 @@ using System.Text;
 namespace SqlLibrary {
     public class StudentController {
         public static BcConnection bcConnection { get; set; }
+        private static Student LoadStudentInstance(SqlDataReader reader) {
+            var student = new Student();
+            student.Id = Convert.ToInt32(reader["Id"]);
+            student.Firstname = reader["Firstname"].ToString();
+            student.Lastname = reader["Lastname"].ToString();
+            student.SAT = Convert.ToInt32(reader["SAT"]);
+            student.GPA = Convert.ToDouble(reader["GPA"]);
+            return student;
+        }
         public static List<Student> GetAllStudents() {
             var sql = "Select * From Student s " +
                 " Left Join Major m on m.Id = s.MajorId";
@@ -17,12 +26,13 @@ namespace SqlLibrary {
             }
             var students = new List<Student>();
             while (reader.Read()) {
-                var student = new Student();
-                student.Id = Convert.ToInt32(reader["Id"]);
-                student.Firstname = reader["Firstname"].ToString();
-                student.Lastname = reader["Lastname"].ToString();
-                student.SAT = Convert.ToInt32(reader["SAT"]);
-                student.GPA = Convert.ToDouble(reader["GPA"]);
+                var student = LoadStudentInstance(reader);
+                //var student = new Student();
+                //student.Id = Convert.ToInt32(reader["Id"]);
+                //student.Firstname = reader["Firstname"].ToString();
+                //student.Lastname = reader["Lastname"].ToString();
+                //student.SAT = Convert.ToInt32(reader["SAT"]);
+                //student.GPA = Convert.ToDouble(reader["GPA"]);
                 //student.MajorId = Convert.ToInt32(reader["MajorId"]);
                 if (Convert.IsDBNull(reader["Description"])) {
                     student.Major = null;
@@ -47,12 +57,13 @@ namespace SqlLibrary {
                 return null;
             }
             reader.Read();
-            var student = new Student();
-            student.Id = Convert.ToInt32(reader["Id"]);
-            student.Firstname = reader["Firstname"].ToString();
-            student.Lastname = reader["Lastname"].ToString();
-            student.SAT = Convert.ToInt32(reader["SAT"]);
-            student.GPA = Convert.ToDouble(reader["GPA"]);
+            var student = LoadStudentInstance(reader);
+            //var student = new Student();
+            //student.Id = Convert.ToInt32(reader["Id"]);
+            //student.Firstname = reader["Firstname"].ToString();
+            //student.Lastname = reader["Lastname"].ToString();
+            //student.SAT = Convert.ToInt32(reader["SAT"]);
+            //student.GPA = Convert.ToDouble(reader["GPA"]);
             //student.MajorId = Convert.ToInt32(reader["MajorId"]);
             reader.Close();
             reader = null;
@@ -117,7 +128,7 @@ namespace SqlLibrary {
             command.Parameters.AddWithValue("@Id", student.Id);
             var recAffected = command.ExecuteNonQuery();
             if (recAffected != 1) {
-                throw new Exception("Delete Failed");
+                throw new Exception("Delete Failed!");
             }
             return true;
         }
