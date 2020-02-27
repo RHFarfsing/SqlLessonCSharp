@@ -9,7 +9,7 @@ namespace SqlLesson {
             StudentController.bcConnection = sqllib;
             MajorController.bcConnection = sqllib;
             InstructorController.bcConnection = sqllib;
-            #region
+            #region Instructor methods
             var instructors = InstructorController.GetAllInstructors();
             foreach (var i in instructors) {
                 Console.WriteLine(i);
